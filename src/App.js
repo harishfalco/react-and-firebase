@@ -6,7 +6,7 @@ import Products from './components/Products';
 import Footer from './components/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SignUp from './SignUp';
-import { AuthProvider } from './Context/AuthContext';
+import { AuthProvider }  from './Context/AuthContext';
 function App() {
   return (
     <div>

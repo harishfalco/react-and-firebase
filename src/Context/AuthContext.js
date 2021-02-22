@@ -1,4 +1,4 @@
-import React, { useContext , useEffect , useState , children} from 'react'
+import React, { useContext , useEffect , useState} from 'react'
 import { auth } from "../FireBase"
 
 
@@ -22,13 +22,14 @@ export const AuthProvider= () => {
         return unsubscribe
     }, [])
 
+    
     const value={
         currentUser,
         signup
     }
     return (
         <AuthContext.Provider value={value}>
-               {children}
+              {children}
         </AuthContext.Provider>    
     )
 }

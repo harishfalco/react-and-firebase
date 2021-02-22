@@ -1,5 +1,5 @@
-import React ,{useRef} from 'react';
-import {Form,Card,Button,Container} from 'react-bootstrap'
+import React ,{useRef, useState} from 'react';
+import {Form,Card,Button,Container,Alert} from 'react-bootstrap'
 import {GoogleLogin} from 'react-google-login';
 import {useAuth} from './Context/AuthContext'
 
@@ -9,10 +9,26 @@ const SignUp = () => {
     const passwordRef = useRef();
     const newPasswordRef = useRef();
     const {signup} = useAuth();
+    const [error , setError] = useState(' ');
+    const [loading ,  setLoading] = useState(false)
     
     function handleSubmit(e){
         e.preventDefault()
-        signup(emailRef.current.value , passwordRef.current.value)
+        if(passwordRef.current.value !== newPasswordRef.current.value){
+            return setError(`passwords don't match`)
+        }
+
+        try{
+            setError('')
+            setLoading(true)
+            await signup(emailRef.current.value, passwordRef.current.value)
+        }
+        catch{
+            setError("failed to create an account")
+        }
+
+        setLoading(false)
+        
     }
 
     return (
@@ -24,7 +40,8 @@ const SignUp = () => {
           <card>
               <Card.Body>
                <h2 className="text-center mb-4">Sign up</h2>
-               <form>
+               {error && <Alert variant = "danger">{error}</Alert>}
+               <form onSubmit = {handleSubmit}>
                    <Form.Group id="email">
                        <Form.Label>Email</Form.Label>
                        <Form.Control type="email" ref={emailRef} required />
@@ -37,7 +54,7 @@ const SignUp = () => {
                        <Form.Label>Confrim Password</Form.Label>
                        <Form.Control type="password" ref={newPasswordRef} required />
                    </Form.Group>
-                   <Button class="w-100" type="submit">Sign Up</Button>
+                   <Button disabled={loading} class="w-100" type="submit">Sign Up</Button>
                </form>
               </Card.Body>
           </card>

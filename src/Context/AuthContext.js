@@ -1,13 +1,12 @@
 import React, { useContext , useEffect , useState} from 'react'
 import { auth } from "../FireBase"
 
-
 const AuthContext = React.createContext('');
 export function useAuth(){
     return  useContext(AuthContext)
 }
 
-export const AuthProvider= () => {
+export const AuthProvider= ({children}) => {
     
     const [currentUser , setCurrentUser] = useState()
 
@@ -16,7 +15,7 @@ export const AuthProvider= () => {
       }
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(user=>{
+        const unsubscribe = auth.onAuthStateChanged(user=>{ 
             setCurrentUser(user)
         })
         return unsubscribe

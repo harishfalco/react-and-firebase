@@ -1,30 +1,31 @@
 import React ,{useRef, useState} from 'react';
 import {Form,Card,Button,Container,Alert} from 'react-bootstrap'
 import {GoogleLogin} from 'react-google-login';
-import {useAuth} from './Context/AuthContext'
 import { Link, useHistory } from "react-router-dom"
-const SignUp = () => {
+import {useAuth} from '../Context/AuthContext'
+// import {Link} from 'react-router-dom'
+import SignUp from '../SignUp'
+
+const Login = () => {
 
     const emailRef = useRef();
     const passwordRef = useRef();
-    const newPasswordRef = useRef();
-    const {signup} = useAuth();
+    const {login} = useAuth();
     const [error , setError] = useState(' ');
     const [loading ,  setLoading] = useState(false)
     const history = useHistory()
-    async  function handleSubmit(e){
+   async function handleSubmit(e){
         e.preventDefault()
-        if(passwordRef.current.value !== newPasswordRef.current.value){
-            return setError(`passwords don't match`)
-        }
+        
 
         try{
             setError('')
             setLoading(true)
-           await signup( emailRef.current.value, passwordRef.current.value)
+           await login( emailRef.current.value, passwordRef.current.value)
+            history.push("/")
         }
         catch{
-            setError("failed to create an account")
+            setError("incorrect credentials")
         }
 
         setLoading(false)
@@ -39,8 +40,8 @@ const SignUp = () => {
             <div className="w-100" style={{maxWidth:"400px"}}>
           <card>
               <Card.Body>
-               <h2 className="text-center mb-4">Sign up</h2>
-               {error && <Alert variant = "danger">{error}</Alert>}
+               <h2 className="text-center mb-4">Log in</h2>
+               {error && <Alert>{error}</Alert>}
                <form onSubmit = {handleSubmit}>
                    <Form.Group id="email">
                        <Form.Label>Email</Form.Label>
@@ -50,17 +51,14 @@ const SignUp = () => {
                        <Form.Label>Password</Form.Label>
                        <Form.Control type="password" ref={passwordRef} required />
                    </Form.Group>
-                   <Form.Group id="password-confrim">
-                       <Form.Label>Confrim Password</Form.Label>
-                       <Form.Control type="password" ref={newPasswordRef} required />
-                   </Form.Group>
-                   <Button disabled={loading} class="w-100" type="submit">Sign Up</Button>
+                  
+                   <Button disabled={loading} class="w-100" type="submit">Log in</Button>
                </form>
               </Card.Body>
           </card>
 
-              <div className="w-100 text-center mt-2">
-                  Already have an account?<Link to="/Login">Log in</Link>
+          <div className="w-100 text-center mt-2">
+                  Need an account? <Link to="/signup">Sign Up</Link>
               </div>
               </div>
               </Container>
@@ -69,4 +67,4 @@ const SignUp = () => {
     )
 }
 
-export default SignUp
+export default Login

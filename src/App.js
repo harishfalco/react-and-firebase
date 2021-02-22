@@ -7,16 +7,27 @@ import Footer from './components/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SignUp from './SignUp';
 import { AuthProvider }  from './Context/AuthContext';
+import {BrowserRouter as Router , Switch , Route, Redirect } from "react-router-dom"
+import Login from './components/Login'
 function App() {
   return (
     <div>
+    <Router>
     <AuthProvider>
-    <Navbar1 />
-    <SignUp />
-    <Header />
-    <Products />
-    <Footer />
+      
+      <Navbar1 />
+      <Switch>
+      <Route path="/signup" component={SignUp} />
+      <Route path="/login" component={Login} />
+      </Switch>
+     <Header />
+     <Products />
+     <Footer />
+     
+      
+    
     </AuthProvider>
+    </Router>
     </div>
   );
 }
